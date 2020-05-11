@@ -6,8 +6,8 @@
 - This will start a separate thread from python that will be listening on localhost:8000
 
 There are two modes for the moment:
-- sync: will execute the commands in a separate thread (not safe)
-- async: will schedule the command to be evaluated in the MainThread every second (safe)
+- sync / exec: will execute the commands in a separate thread (not safe) but will return data 
+- async: will schedule the command to be evaluated in the MainThread every second (safe) no data can be return
 
 
 #### Warning
@@ -41,8 +41,8 @@ There are two modes for the moment:
 - GET Object properties 
 `curl localhost:8000/Cube/location`     Expected: <Vector (3.1146, 8.0631, 4.8566)>
  
-- POST Move object
-`curl --data "bpy.data.objects['Cube'].location.x += 0.05" localhost:8000/sync`
+- POST Move object ( assignment )
+`curl --data "bpy.data.objects['Cube'].location.x += 0.05" localhost:8000/exec`
  
 - POST Accessing actions that depends on context view: FAILS ( works in python interpreter )
 `curl --data "bpy.ops.object.editmode_toggle()" localhost:8000/sync`  >>> throws error as context is not VIEW 3D
@@ -82,5 +82,4 @@ bpy.app.driver_namespace["cube"] = cube
 
 ```
 curl --data "4,-3,6" localhost:8000/cube
-
 ```
